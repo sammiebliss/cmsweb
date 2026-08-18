@@ -1,0 +1,61 @@
+:host {
+  display: block;
+}
+
+.hero-media {
+  animation: dcKenBurns 22s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.hero-shine {
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(168, 232, 106, 0.08) 48%,
+    transparent 56%
+  );
+  background-size: 200% 100%;
+  animation: heroShine 10s ease-in-out infinite;
+}
+
+@keyframes heroShine {
+  0%,
+  100% {
+    background-position: 100% 0;
+  }
+  50% {
+    background-position: 0 0;
+  }
+}
+
+.scroll-cue {
+  animation: dcFloat 2.4s ease-in-out infinite;
+}
+
+.step-rail {
+  position: relative;
+}
+
+.step-rail::before {
+  content: '';
+  position: absolute;
+  left: 1.35rem;
+  top: 2.5rem;
+  bottom: 2.5rem;
+  width: 1px;
+  background: linear-gradient(to bottom, rgba(168, 232, 106, 0.55), rgba(168, 232, 106, 0.05));
+}
+
+@media (min-width: 768px) {
+  .step-rail::before {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-media,
+  .hero-shine,
+  .scroll-cue {
+    animation: none !important;
+  }
+}

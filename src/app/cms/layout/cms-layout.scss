@@ -1,0 +1,225 @@
+.cms-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: var(--cms-sidebar) 1fr;
+  background:
+    radial-gradient(ellipse 70% 40% at 100% 0%, rgb(168 232 106 / 0.08), transparent),
+    var(--cms-paper);
+}
+
+.cms-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  border: 0;
+  background: rgb(7 22 18 / 0.45);
+  backdrop-filter: blur(2px);
+}
+
+.cms-sidebar {
+  background: linear-gradient(180deg, #0c3428 0%, #0a2e22 42%, #071f18 100%);
+  color: #e8f0ea;
+  padding: 1rem 0.7rem 1.2rem;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgb(255 255 255 / 0.06);
+  z-index: 90;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.45rem 0.65rem 1rem;
+  border-bottom: 1px solid rgb(255 255 255 / 0.08);
+  margin-bottom: 0.65rem;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(145deg, #c5f08a, #1a8f63 55%, #0f5c45);
+  color: #071612;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.brand-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.brand strong {
+  font-family: var(--cms-display), Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.brand span span,
+.brand-text > span {
+  opacity: 0.62;
+  font-size: 0.72rem;
+}
+
+.cms-sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+  flex: 1;
+}
+
+.nav-group-label {
+  margin: 0.9rem 0.7rem 0.3rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.48;
+  font-weight: 700;
+}
+
+.cms-sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: rgb(232 240 234 / 0.78);
+  text-decoration: none;
+  padding: 0.55rem 0.7rem;
+  border-radius: 0.7rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+}
+
+.cms-sidebar a i {
+  width: 1.1rem;
+  text-align: center;
+  opacity: 0.85;
+}
+
+.cms-sidebar a.active,
+.cms-sidebar a:hover {
+  background: rgb(168 232 106 / 0.12);
+  color: #c5f08a;
+}
+
+.cms-sidebar a.active {
+  box-shadow: inset 0 0 0 1px rgb(168 232 106 / 0.18);
+}
+
+.sidebar-foot {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgb(255 255 255 / 0.08);
+}
+
+.site-link {
+  display: flex !important;
+  gap: 0.5rem;
+  align-items: center;
+  color: rgb(232 240 234 / 0.7) !important;
+  font-size: 0.82rem !important;
+}
+
+.cms-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.cms-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1.25rem;
+  background: rgb(255 255 255 / 0.88);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--cms-line);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.cms-menu-btn {
+  display: none;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 0.7rem;
+  border: 1px solid var(--cms-line);
+  background: #fff;
+  color: var(--cms-forest);
+  cursor: pointer;
+}
+
+.welcome {
+  font-weight: 650;
+  font-size: 0.95rem;
+}
+
+.roles {
+  font-size: 0.76rem;
+  color: var(--cms-muted);
+  text-transform: capitalize;
+}
+
+.actions {
+  display: flex;
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+
+.cms-content {
+  padding: 1.25rem 1.25rem 2rem;
+  flex: 1;
+}
+
+@media (min-width: 1200px) {
+  .cms-content {
+    padding: 1.5rem 1.75rem 2.25rem;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .cms-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .cms-menu-btn {
+    display: grid;
+  }
+
+  .cms-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: min(var(--cms-sidebar), 86vw);
+    transform: translateX(-105%);
+    transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 16px 0 40px rgb(0 0 0 / 0.2);
+  }
+
+  .cms-shell.nav-open .cms-sidebar {
+    transform: translateX(0);
+  }
+}

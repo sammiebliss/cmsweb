@@ -1,0 +1,270 @@
+<a href="#main-content" class="dc-skip">Skip to content</a>
+
+<header class="dc-header" [class.is-scrolled]="scrolled()">
+  <div class="dc-container dc-header-inner">
+    <a routerLink="/" class="dc-brand" aria-label="Digital Check home">
+      @if (logoUrl(); as logo) {
+        <img [src]="logo" alt="" class="h-10 w-10 rounded-2xl bg-white object-contain p-1" />
+      } @else {
+        <span class="dc-brand-mark" aria-hidden="true">DC</span>
+      }
+      <span class="min-w-0">
+        <span class="dc-brand-name">{{ siteName() }}</span>
+        <span class="dc-brand-tag">{{ tagline() }}</span>
+      </span>
+    </a>
+
+    <nav class="dc-nav" aria-label="Primary">
+      @for (item of menuItems(); track item.label) {
+        <div
+          class="dc-nav-wrap"
+          data-nav-dropdown
+          (mouseenter)="item.children?.length && openDropdown.set(item.label)"
+          (mouseleave)="openDropdown.set(null)"
+        >
+          @if (item.children?.length) {
+            <button
+              type="button"
+              class="dc-nav-item"
+              [class.is-open]="openDropdown() === item.label"
+              [class.is-active]="isNavActive(item)"
+              (click)="toggleDropdown(item.label, $event)"
+              [attr.aria-expanded]="openDropdown() === item.label"
+              aria-haspopup="true"
+            >
+              {{ item.label }}
+              <svg class="chev" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M5.25 7.5L10 12.25L14.75 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+            </button>
+            @if (openDropdown() === item.label) {
+              <div class="dc-dropdown" role="menu">
+                @if (item.url) {
+                  <a
+                    role="menuitem"
+                    [routerLink]="item.url"
+                    routerLinkActive="is-active"
+                    [routerLinkActiveOptions]="{ exact: item.url === '/' }"
+                    (click)="openDropdown.set(null)"
+                    >Overview</a
+                  >
+                }
+                @for (child of item.children; track child.label) {
+                  <a
+                    role="menuitem"
+                    [routerLink]="child.url || '/'"
+                    routerLinkActive="is-active"
+                    [routerLinkActiveOptions]="{ exact: false }"
+                    (click)="openDropdown.set(null)"
+                    >{{ child.label }}</a
+                  >
+                }
+              </div>
+            }
+          } @else {
+            <a
+              class="dc-nav-item"
+              [routerLink]="item.url || '/'"
+              routerLinkActive="is-active"
+              [routerLinkActiveOptions]="{ exact: item.url === '/' }"
+              >{{ item.label }}</a
+            >
+          }
+        </div>
+      }
+    </nav>
+
+    <div class="dc-header-actions">
+      <form class="hidden lg:block" (submit)="$event.preventDefault(); onSearch()" role="search">
+        <label class="sr-only" for="site-search">Search the site</label>
+        <input
+          id="site-search"
+          class="dc-search"
+          placeholder="Search…"
+          [(ngModel)]="searchQuery"
+          name="q"
+        />
+      </form>
+      <a [routerLink]="ctaUrl()" class="dc-cta">{{ ctaLabel() }}</a>
+      <button
+        type="button"
+        class="dc-menu-toggle"
+        (click)="setMobileOpen(!mobileOpen)"
+        [attr.aria-expanded]="mobileOpen"
+        aria-controls="mobile-nav"
+      >
+        <span class="sr-only">{{ mobileOpen ? 'Close menu' : 'Open menu' }}</span>
+        @if (mobileOpen) {
+          <span aria-hidden="true">✕</span>
+        } @else {
+          <span class="flex flex-col gap-1" aria-hidden="true">
+            <span class="block h-0.5 w-4 rounded bg-white"></span>
+            <span class="block h-0.5 w-4 rounded bg-white"></span>
+            <span class="block h-0.5 w-4 rounded bg-white"></span>
+          </span>
+        }
+      </button>
+    </div>
+  </div>
+</header>
+
+@if (mobileOpen) {
+  <div class="lg:hidden" role="dialog" aria-modal="true" aria-label="Site menu">
+    <button type="button" class="dc-drawer-backdrop" (click)="setMobileOpen(false)" aria-label="Close menu overlay"></button>
+    <div id="mobile-nav" class="dc-drawer">
+      <div class="flex items-center justify-between border-b border-white/10 px-5 py-4">
+        <span class="font-display text-lg text-white">Menu</span>
+        <button type="button" class="dc-menu-toggle" (click)="setMobileOpen(false)">Close</button>
+      </div>
+      <div class="flex-1 overflow-y-auto px-5 py-3">
+        <form class="mb-4" (submit)="$event.preventDefault(); onSearch()">
+          <input class="dc-search !flex !w-full" placeholder="Search site…" [(ngModel)]="searchQuery" name="mq" />
+        </form>
+        @for (item of menuItems(); track item.label) {
+          @if (item.children?.length) {
+            <div>
+              <button
+                type="button"
+                class="dc-drawer-parent"
+                [class.is-active]="isNavActive(item)"
+                (click)="toggleMobileGroup(item.label)"
+              >
+                <span>{{ item.label }}</span>
+                <span class="text-white/55">{{ mobileExpanded() === item.label ? '−' : '+' }}</span>
+              </button>
+              @if (mobileExpanded() === item.label) {
+                <div class="dc-drawer-sub border-l border-white/10 pb-3 pl-4">
+                  @if (item.url) {
+                    <a
+                      [routerLink]="item.url"
+                      routerLinkActive="is-active"
+                      [routerLinkActiveOptions]="{ exact: item.url === '/' }"
+                      (click)="setMobileOpen(false)"
+                      >Overview</a
+                    >
+                  }
+                  @for (child of item.children; track child.label) {
+                    <a
+                      [routerLink]="child.url || '/'"
+                      routerLinkActive="is-active"
+                      (click)="setMobileOpen(false)"
+                      >{{ child.label }}</a
+                    >
+                  }
+                </div>
+              }
+            </div>
+          } @else {
+            <a
+              class="dc-drawer-link"
+              [routerLink]="item.url || '/'"
+              routerLinkActive="is-active"
+              [routerLinkActiveOptions]="{ exact: item.url === '/' }"
+              (click)="setMobileOpen(false)"
+              >{{ item.label }}</a
+            >
+          }
+        }
+      </div>
+      <div class="border-t border-white/10 p-5">
+        <a [routerLink]="ctaUrl()" class="dc-cta !flex w-full" (click)="setMobileOpen(false)">{{ ctaLabel() }}</a>
+      </div>
+    </div>
+  </div>
+}
+
+<main id="main-content" class="min-h-[55vh] outline-none" tabindex="-1">
+  <router-outlet />
+</main>
+
+<footer class="relative overflow-hidden bg-ink text-white">
+  <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_0%,rgba(168,232,106,0.12),transparent_32%),radial-gradient(circle_at_90%_20%,rgba(15,92,69,0.35),transparent_40%)]"></div>
+  <div class="dc-container relative py-10 lg:py-14">
+    <div class="grid gap-10 lg:grid-cols-[1.1fr_1.5fr] lg:gap-16">
+      <div>
+        <div class="mb-5 flex items-start gap-3">
+          @if (logoUrl(); as logo) {
+            <img [src]="logo" alt="" class="h-11 w-11 rounded-2xl bg-white object-contain p-1" />
+          } @else {
+            <span class="dc-brand-mark" aria-hidden="true">DC</span>
+          }
+          <div>
+            <div class="font-display text-2xl leading-none text-white">{{ siteName() }}</div>
+            <p class="mt-2 text-sm leading-snug text-white/60">{{ tagline() }}</p>
+          </div>
+        </div>
+        <p class="max-w-md text-sm leading-relaxed text-white/70">
+          {{ settings()['footer_about'] || 'ICT solutions for agriculture, development programmes and enterprise technology services across Nigeria.' }}
+        </p>
+        <div class="mt-6 flex flex-wrap gap-2">
+          <a [routerLink]="ctaUrl()" class="dc-cta !inline-flex">{{ ctaLabel() }}</a>
+          <a routerLink="/services" class="dc-btn-ghost !min-h-10 !px-5 !py-2">Our services</a>
+        </div>
+        <div class="mt-8 max-w-md">
+          <p class="mb-2 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-white/45">Newsletter</p>
+          <app-newsletter-footer-inline />
+        </div>
+      </div>
+
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        @for (col of footerItems(); track col.label) {
+          <div>
+            <h4 class="mb-3.5 font-sans text-[0.68rem] font-bold uppercase tracking-[0.18em] text-glow">
+              @if (col.url) {
+                <a class="text-glow no-underline hover:text-white" [routerLink]="col.url">{{ col.label }}</a>
+              } @else {
+                {{ col.label }}
+              }
+            </h4>
+            <div class="space-y-2.5">
+              @for (link of col.children || []; track link.label) {
+                <a class="block text-sm text-white/68 no-underline transition hover:text-white" [routerLink]="link.url || '/'">{{ link.label }}</a>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="mt-11 grid gap-2 rounded-[1.35rem] border border-white/10 bg-white/[0.04] p-2 text-sm text-white/80 sm:grid-cols-3 sm:gap-0 sm:p-2">
+      <a class="rounded-[1.1rem] px-4 py-3.5 text-white/85 no-underline transition hover:bg-white/5 hover:text-glow" [href]="mailHref()">
+        <span class="mb-1 block text-[0.65rem] font-bold uppercase tracking-wider text-white/45">Email</span>
+        {{ settings()['contact_email'] || 'dafe@digitcheck.org' }}
+      </a>
+      <a class="rounded-[1.1rem] px-4 py-3.5 text-white/85 no-underline transition hover:bg-white/5 hover:text-glow" [href]="telHref()">
+        <span class="mb-1 block text-[0.65rem] font-bold uppercase tracking-wider text-white/45">Phone</span>
+        {{ settings()['contact_phone'] || '+234 908 455 9461' }}
+      </a>
+      <div class="rounded-[1.1rem] px-4 py-3.5">
+        <span class="mb-1 block text-[0.65rem] font-bold uppercase tracking-wider text-white/45">Office</span>
+        {{ settings()['contact_address'] || 'Maralago Lake City Resort, FCT, Abuja, Nigeria' }}
+      </div>
+    </div>
+
+    <div class="mt-8 flex flex-col gap-3 border-t border-white/10 pt-6 text-sm text-white/55 sm:flex-row sm:items-center sm:justify-between">
+      <p>{{ settings()['footer_text'] || '© Digital Check Nigeria. All rights reserved.' }}</p>
+      <div class="flex flex-wrap gap-4" *ngIf="socialLinks() as socials">
+        @if (socials['linkedin']) {
+          <a class="text-white/70 no-underline transition hover:text-glow" [href]="socials['linkedin']" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        }
+        @if (socials['twitter']) {
+          <a class="text-white/70 no-underline transition hover:text-glow" [href]="socials['twitter']" target="_blank" rel="noopener noreferrer">X</a>
+        }
+        @if (socials['facebook']) {
+          <a class="text-white/70 no-underline transition hover:text-glow" [href]="socials['facebook']" target="_blank" rel="noopener noreferrer">Facebook</a>
+        }
+      </div>
+    </div>
+  </div>
+</footer>
+
+@if (showTop()) {
+  <button
+    type="button"
+    class="dc-top-btn"
+    (click)="scrollTop()"
+    aria-label="Back to top"
+  >
+    ↑
+  </button>
+}

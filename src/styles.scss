@@ -1,0 +1,365 @@
+/* Bootstrap (admin) in a lower cascade layer; Tailwind brand system wins on the public site. */
+
+@layer bootstrap, theme, base, components, utilities;
+
+@import './styles/vendor/bootstrap.min.css' layer(bootstrap);
+@import 'primeicons/primeicons.css';
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+
+  --color-ink: #071612;
+  --color-forest: #0a2e22;
+  --color-brand: #0f5c45;
+  --color-leaf: #1a8f63;
+  --color-glow: #a8e86a;
+  --color-sand: #f0f4ee;
+  --color-mist: #e2ede6;
+  --color-paper: #fafcf8;
+  --color-line: #d0dfd6;
+  --color-muted: #5a7268;
+
+  --shadow-soft: 0 14px 36px -16px rgb(7 22 18 / 0.14);
+  --shadow-lift: 0 28px 56px -22px rgb(7 22 18 / 0.22);
+  --shadow-glow: 0 0 0 1px rgb(168 232 106 / 0.22), 0 18px 40px -18px rgb(15 92 69 / 0.35);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    margin: 0;
+    min-height: 100%;
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background-color: var(--color-paper);
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgb(168 232 106 / 0.07), transparent),
+      linear-gradient(180deg, #fafcf8 0%, #f5f8f3 100%);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body.dc-nav-open {
+    overflow: hidden;
+  }
+
+  app-website-layout h1,
+  app-website-layout h2,
+  app-website-layout h3,
+  app-home h1,
+  app-home h2,
+  app-home h3,
+  app-cms-public-page h1,
+  app-cms-public-page h2,
+  app-cms-public-page h3,
+  app-content-list h1,
+  app-content-list h2,
+  app-content-list h3,
+  app-content-detail h1,
+  app-content-detail h2,
+  app-content-detail h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.025em;
+    font-weight: 500;
+  }
+
+  img {
+    max-width: 100%;
+    display: block;
+  }
+
+  a {
+    transition: color 0.2s ease;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-glow);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-glow) 55%, white);
+    color: var(--color-ink);
+  }
+}
+
+@layer components {
+  .dc-skip {
+    @apply absolute left-4 top-0 z-[100] -translate-y-[150%] rounded-full bg-glow px-4 py-2 text-sm font-semibold text-ink shadow-soft transition focus:translate-y-4;
+  }
+
+  .dc-container {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8;
+  }
+
+  .dc-kicker {
+    @apply inline-flex items-center gap-2 text-[0.68rem] font-bold uppercase tracking-[0.2em] text-leaf;
+  }
+
+  .dc-kicker::before {
+    content: '';
+    @apply h-1.5 w-1.5 shrink-0 rounded-full bg-glow shadow-[0_0_0_3px_rgb(168_232_106_/_0.25)];
+  }
+
+  .dc-title {
+    @apply font-display text-[1.9rem] leading-[1.1] tracking-tight text-ink sm:text-4xl lg:text-[2.65rem];
+  }
+
+  .dc-lead {
+    @apply max-w-2xl text-[0.98rem] leading-relaxed text-muted sm:text-[1.05rem];
+  }
+
+  .dc-btn-primary {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-glow px-6 py-2.5 text-sm font-semibold text-ink shadow-soft transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-lift active:translate-y-0 disabled:pointer-events-none disabled:opacity-55;
+  }
+
+  .dc-btn-dark {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-brand px-6 py-2.5 text-sm font-semibold text-white shadow-soft transition duration-300 hover:-translate-y-0.5 hover:bg-forest hover:shadow-lift active:translate-y-0 disabled:pointer-events-none disabled:opacity-55;
+  }
+
+  .dc-btn-ghost {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-white/25 bg-white/8 px-6 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition duration-300 hover:border-white/50 hover:bg-white/14 active:translate-y-0;
+  }
+
+  .dc-btn-outline {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-line bg-white px-6 py-2.5 text-sm font-semibold text-forest transition duration-300 hover:border-brand hover:bg-mist active:translate-y-0;
+  }
+
+  .dc-card {
+    @apply overflow-hidden rounded-[1.5rem] border border-line/90 bg-white shadow-soft transition duration-300 hover:-translate-y-1 hover:border-brand/20 hover:shadow-lift;
+  }
+
+  .dc-chip {
+    @apply inline-flex items-center rounded-full bg-mist px-3 py-1 text-[0.7rem] font-semibold tracking-wide text-brand;
+  }
+
+  .dc-section {
+    @apply py-10 sm:py-14 lg:py-16;
+  }
+
+  .dc-section-head {
+    @apply mb-7 flex flex-col gap-3 sm:mb-9 sm:flex-row sm:items-end sm:justify-between;
+  }
+
+  .dc-link {
+    @apply inline-flex items-center gap-1.5 text-sm font-semibold text-brand no-underline transition hover:gap-2.5 hover:text-leaf;
+  }
+
+  .dc-input {
+    @apply w-full rounded-2xl border border-line bg-white px-4 py-3 text-sm text-ink outline-none transition placeholder:text-muted/70 focus:border-brand focus:ring-4 focus:ring-brand/10;
+  }
+
+  .dc-label {
+    @apply mb-1.5 block text-sm font-medium text-ink/80;
+  }
+
+  .dc-field {
+    @apply space-y-1.5;
+  }
+
+  .dc-prose {
+    @apply max-w-3xl text-[1.05rem] leading-8 text-ink/85;
+  }
+
+  .dc-prose p + p,
+  .dc-prose ul {
+    @apply mt-4;
+  }
+
+  .dc-prose ul {
+    @apply list-disc space-y-2 pl-5;
+  }
+
+  .dc-prose h2 {
+    @apply mb-3 mt-8 font-display text-3xl text-ink;
+  }
+
+  .dc-page-hero {
+    @apply relative overflow-hidden bg-forest text-white;
+  }
+
+  .dc-page-hero::before {
+    content: '';
+    @apply pointer-events-none absolute inset-0 opacity-95;
+    background:
+      radial-gradient(circle at 12% 18%, rgb(168 232 106 / 0.18), transparent 34%),
+      radial-gradient(circle at 88% 8%, rgb(26 143 99 / 0.35), transparent 32%),
+      linear-gradient(145deg, #041812 0%, #0b3d2e 48%, #0f2f3a 100%);
+  }
+
+  .dc-page-hero::after {
+    content: '';
+    @apply pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-glow/40 to-transparent;
+  }
+
+  .dc-page-hero > * {
+    @apply relative;
+  }
+
+  .dc-empty {
+    @apply flex flex-col items-center justify-center rounded-[1.5rem] border border-dashed border-line bg-sand/70 px-6 py-12 text-center;
+  }
+
+  .dc-cover {
+    @apply absolute inset-0 block h-full w-full object-cover;
+  }
+
+  .dc-skeleton {
+    @apply animate-pulse rounded-2xl bg-mist;
+  }
+
+  .dc-badge-live {
+    @apply inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-glow backdrop-blur-md;
+  }
+
+  .dc-back {
+    @apply mb-5 inline-flex items-center gap-2 text-sm text-white/75 no-underline transition hover:text-glow;
+  }
+
+  .dc-stat {
+    @apply relative overflow-hidden rounded-[1.35rem] border border-line bg-white p-5 text-center shadow-soft transition duration-300 hover:-translate-y-0.5 hover:border-brand/20 hover:shadow-lift sm:p-6;
+  }
+
+  .dc-stat::before {
+    content: '';
+    @apply absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-glow/60 to-transparent opacity-0 transition;
+  }
+
+  .dc-stat:hover::before {
+    @apply opacity-100;
+  }
+
+  .dc-panel-cta {
+    @apply relative overflow-hidden rounded-[1.75rem] px-6 py-10 text-center text-white sm:px-12 sm:py-12;
+    background:
+      radial-gradient(circle at 88% 12%, rgba(168, 232, 106, 0.22), transparent 32%),
+      radial-gradient(circle at 10% 90%, rgba(26, 143, 99, 0.35), transparent 40%),
+      linear-gradient(125deg, #0d5c45 0%, #0a2e22 48%, #0b2f3a 100%);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .dc-service-card {
+    @apply relative flex h-full flex-col overflow-hidden rounded-[1.5rem] border border-line bg-white p-5 no-underline shadow-soft transition duration-300 hover:-translate-y-1.5 hover:border-glow/40 hover:shadow-lift sm:p-6;
+  }
+
+  .dc-service-card::after {
+    content: '';
+    @apply pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-glow/0 transition duration-500;
+  }
+
+  .dc-service-card:hover::after {
+    @apply bg-glow/15;
+  }
+
+  .dc-media-card {
+    @apply relative overflow-hidden rounded-[1.5rem] border border-line/90 bg-white shadow-soft no-underline transition duration-300 hover:-translate-y-1.5 hover:shadow-lift;
+  }
+
+  .dc-quote {
+    @apply relative rounded-[1.5rem] border border-line border-l-[3px] border-l-glow bg-white p-6 shadow-soft sm:p-8;
+  }
+
+  .dc-quote::before {
+    content: '“';
+    @apply absolute right-5 top-2 font-display text-6xl leading-none text-mist;
+  }
+
+  .dc-partner-tile {
+    @apply flex min-h-[4.75rem] items-center justify-center rounded-2xl border border-line bg-white px-3 py-4 text-center text-sm font-semibold leading-snug text-forest shadow-soft transition duration-300 hover:-translate-y-0.5 hover:border-brand/25 hover:shadow-lift;
+  }
+
+  .dc-breadcrumb {
+    @apply flex flex-wrap items-center gap-2 text-xs text-white/55;
+  }
+
+  .dc-breadcrumb a {
+    @apply text-white/55 no-underline transition hover:text-glow;
+  }
+
+  .dc-breadcrumb .is-current {
+    @apply text-white/88;
+  }
+
+  .dc-feature-item {
+    @apply flex gap-3 rounded-[1.2rem] border border-line bg-white px-4 py-4 shadow-soft transition hover:border-brand/20 hover:shadow-lift;
+  }
+
+  .dc-feature-index {
+    @apply shrink-0 font-display text-lg leading-none text-brand;
+  }
+
+  .dc-fade-up {
+    animation: dcFadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .dc-fade-up-delay-1 {
+    animation-delay: 0.08s;
+  }
+
+  .dc-fade-up-delay-2 {
+    animation-delay: 0.16s;
+  }
+
+  .dc-fade-up-delay-3 {
+    animation-delay: 0.24s;
+  }
+
+  .dc-fade-up-delay-4 {
+    animation-delay: 0.32s;
+  }
+}
+
+@keyframes dcFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dcKenBurns {
+  from {
+    transform: scale(1.04);
+  }
+  to {
+    transform: scale(1.12);
+  }
+}
+
+@keyframes dcFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+/* Admin remainders */
+.page-title {
+  font-family: var(--font-display);
+}
